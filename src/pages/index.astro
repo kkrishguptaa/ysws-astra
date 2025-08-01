@@ -1,16 +1,101 @@
 ---
-
+import astroLogo from "@assets/astro.svg";
+import App from "@/layouts/app.astro";
+import { Button } from "@/components/ui/button";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<App>
+  <main class="flex flex-col gap-16 h-screen items-center justify-center">
+    <img
+      id="spaceship-logo"
+      src={astroLogo.src}
+      alt="Astro Logo"
+      class="w-48 h-48 sm:w-56 sm:h-56"
+    />
+    <section id="content" class="container mx-auto space-y-8 text-center">
+      <h1 class="text-4xl sm:text-6xl font-extrabold">Astra YSWS</h1>
+      <p class="sm:text-xl text-zinc-300">
+        You Ship an Astro Website, We Ship <span class="cursor-help">???</span>
+      </p>
+      <nav class="flex items-center justify-center gap-4">
+        <a
+          href="https://forms.fillout.com/t/wvVdMACejBus"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Button className="cursor-pointer">RSVP</Button>
+        </a>
+        <a href="/houston">
+          <Button variant="secondary" className="cursor-pointer">Details</Button
+          >
+        </a>
+      </nav>
+    </section>
+  </main>
+</App>
+
+<script>
+  import gsap from "gsap";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const logo = document.getElementById("spaceship-logo");
+    const content = document.getElementById("content");
+
+    gsap.set(logo, {
+      x: 0,
+      y: window.innerHeight + 100,
+      rotation: 0,
+      scale: 0.3,
+      opacity: 0,
+    });
+
+    gsap.set(content, {
+      opacity: 0,
+      y: 30,
+      scale: 0.9,
+    });
+
+    const tl = gsap.timeline();
+
+    tl
+      // Phase 1: Spaceship flies in
+      .to(logo, {
+        x: 0,
+        y: 0,
+        rotation: 0,
+        scale: 1,
+        opacity: 1,
+        duration: 1.5,
+        ease: "power2.out",
+      })
+      // Phase 2: Spaceship bounces down
+      .to(logo, {
+        y: 20,
+        duration: 0.3,
+        ease: "power2.out",
+      })
+      // Phase 3: Spaceship settles in place
+      .to(logo, {
+        y: 0,
+        duration: 0.4,
+        ease: "elastic.out(1, 0.3)",
+      })
+      // Phase 4: Content appears after spaceship is settled
+      .to(content, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.5,
+        ease: "back.out(1.7)",
+      })
+      // Phase 5: Start floating animation for spaceship
+      .to(logo, {
+        y: -10,
+        rotation: 2,
+        duration: 2,
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
+      });
+  });
+</script>
